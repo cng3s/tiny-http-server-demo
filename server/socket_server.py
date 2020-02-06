@@ -14,7 +14,7 @@ class TCPServer:
         self.is_shutdown = False
 
     # 服务器启动
-    def server_forever(self):
+    def serve_forever(self):
         self.socket.bind(self.server_address)
         self.socket.listen(10)
         while not self.is_shutdown:
