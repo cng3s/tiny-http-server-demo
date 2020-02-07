@@ -26,13 +26,6 @@ class TCPServer:
                 self.process_request_multithread(request, client_addr)
             except Exception as e:
                 print(e)
-            '''
-            # 这段代码需要注释掉，否则会因为子线程已经关闭
-            # 而主线程又去关闭request导致错误
-            finally:
-                # 3. 关闭连接
-                self.close_request(request)
-            '''
 
 
     # 接收请求
@@ -44,7 +37,8 @@ class TCPServer:
     def process_request(self, request, client_addr):
         handler = self.HandlerClass(self, request, client_addr)
         handler.handle()
-        request.close()
+        # 关闭连接
+        self.close_request(request)
 
     def process_request_multithread(self, request, client_addr):
         t = threading.Thread(target=self.process_request,

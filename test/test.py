@@ -8,8 +8,6 @@ from server.socket_server import TCPServer
 from server.base_http_server import BaseHTTPServer
 
 
-
-
 # 测试BaseRequestHandler
 class TestBaseRequestHandler(StreamRequestHandler):
 

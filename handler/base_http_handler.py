@@ -22,9 +22,11 @@ class BaseHTTPRequestHandler(StreamRequestHandler):
     def handle(self):
         try:
             # 1.解析请求
-            if self.parse_request() is False:
+            if not self.parse_request():
                 return
             # 2.请求方法执行(GET/POST)
+            # 这里method_name将会拼装为do_GET或do_POST字符串
+            # 然后通过下边的getattr转换为do_GET或do_POST方法并调用
             method_name = 'do_' + self.method
             # 自检判断方法是否存在
             if not hasattr(self, method_name):
@@ -68,10 +70,10 @@ class BaseHTTPRequestHandler(StreamRequestHandler):
         # 1.解析请求行
         first_line = self.readline()
         self.request_line = first_line
-        if self.request_line is None:
+        if not self.request_line:
             return
         words = first_line.split()
-        # 请求方法，请求地址，请求HTPP版本
+        # 请求方法，请求地址，请求HTTP版本
         self.method, self.path, self.version = words
 
         # 2.解析请求头
@@ -196,7 +198,7 @@ class BaseHTTPRequestHandler(StreamRequestHandler):
         # 错误的HTML信息
         response_content = self.DEFAULT_ERROR_MESSAGE_TEMPLATE % {
             'code': code,
-            'messge': s_msg,
+            'message': s_msg,
             'explain': l_msg
         }
         self.write_response(code, s_msg)
